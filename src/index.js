@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 const divCollector = document.querySelector('div#toy-collection')
 function createToys(toy){
+  let div = document.createElement('div')
+  div.dataset.id = toy.id 
   let h2 = document.createElement('h2')
   h2.innerText = toy.name
   let img = document.createElement('img')
@@ -24,13 +26,14 @@ function createToys(toy){
   let button = document.createElement('button')
   button.innerText = "Like"
   button.addEventListener('click', function (event){
-  const pTag = event.target.closest('p')
-  console.log(pTag)
-  const current = parseInt(pTag.textContent)
-  const newLikes = {
+    const div1 = event.target.closest('div')
+    const pTag = div1.querySelector('p')
+    const current = parseInt(pTag.textContent)
+    const newLikes = {
     likes: current + 1
-  }
-  fetch(`http://localhost:3000/toys/:id`, {
+    }
+    console.log(newLikes)
+  fetch(`http://localhost:3000/toys/${div.dataset.id}`, {
     method: 'PATCH',
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +46,7 @@ function createToys(toy){
       pTag.textContent = `${data.likes} likes`
     })   
   })
-  let div = document.createElement('div')
+  
   div.append(h2, img, p, button)
   divCollector.append(div)
 }
